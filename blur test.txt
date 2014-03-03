@@ -1,0 +1,110 @@
+from PIL import Image
+
+def ballSack():
+	file = raw_input("Enter the name of the picture you want to use:")
+	newFile = "C:\Users\Ben\Pictures\wallpapers\%s.%s" % (file, "jpg")
+	pic = Image.open(newFile)
+	blurB(pic)
+
+def blurB(pic):
+ 
+  pixels = pic.array
+  temp1 = copy.copy(pixels)
+  #temp2 = copy.copy(pixels)
+  stride = pic.width * 4
+
+  clr = array.array('B',[255,255,255,255])
+
+  w = pic.width
+  h = pic.height
+
+  def pascal(n):
+    """Prints n first lines of Pascal`s triangle
+
+    last rev 20.03.05"""
+    #n += 1
+
+    l=[1]
+    p=[]
+    for i in xrange(n):
+      l2=[1]
+      for j in xrange(len(l)-1):
+         l2.append(l[j]+l[j+1])
+      l2.append(1)
+      #print l
+      l=l2
+    return l
+
+
+  N = 5
+  g = pascal(N)
+  print '>',g
+
+  gauss_fact = g
+  #gauss_fact = [1,2,1]
+  #gauss_fact = [1,1]
+  gauss_width  = len(gauss_fact)
+  s = 0
+  for n in gauss_fact:
+    s += n
+  gauss_sum = s
+
+
+
+  print "Pass01"
+  for i in range(1,w-1):
+    #print i," of ",w
+    for j in range(1,h-1):
+      sumr=0
+      sumg=0
+      sumb=0
+      for k in range(0,gauss_width):
+        x = i-((gauss_width-1)>>1)+k
+        y = j
+        offset = y * stride + x * 4
+        pixel = pixels[offset:offset+4]
+
+        r = pixel[0]
+        g = pixel[1]
+        b = pixel[2]
+
+        sumr+=r*gauss_fact[k]
+        sumg+=g*gauss_fact[k]
+        sumb+=b*gauss_fact[k]
+
+        clr[0] = sumr/gauss_sum
+        clr[1] = sumg/gauss_sum 
+        clr[2] = sumb/gauss_sum
+
+        x = i
+        y = j
+        offset = y * stride + x * 4
+        temp1[offset:offset+4] = clr
+
+  print "Pass02"
+  for i in range(1,w-1):
+    #print i," of ",w
+    for j in range(1,h-1):
+      sumr=0
+      sumg=0
+      sumb=0
+      for k in range(0,gauss_width):
+        x = i-((gauss_width-1)>>1)+k
+        y = j
+
+        offset = y * stride + x * 4
+        pixel = temp1[offset:offset+4]
+
+        r = pixel[0]
+        g = pixel[1]
+        b = pixel[2]
+
+        sumr+=r*gauss_fact[k]
+        sumg+=g*gauss_fact[k]
+        sumb+=b*gauss_fact[k]
+
+    clr[0] = sumr/gauss_sum
+    clr[1] = sumg/gauss_sum
+    clr[2] = sumb/gauss_sum
+
+    pic.setPixel(i,j,clr) #to temp1
