@@ -4,16 +4,18 @@
 
 from PIL import Image
 
-#changedColor = 
+changedColor = (200,200,200)
+
 
 def main():
     picture = openPic()
+    #pixelMap = picture.load()
     w, h = getImageDimensions(picture)
+
     showDimensions(w, h)
-    #getPixelColor(picture, w, h)
-    rgb = picture.convert("RGB")
-    r, g, b = rgb.getpixel((1,1))
-    print r, g, b
+    getAndSetPixelColor(picture, w, h)
+    
+    
     
 
 #open the picture in the PICTURES folder
@@ -32,11 +34,15 @@ def getImageDimensions(pic):
 def showDimensions(w, h):
     print "Width:", w, "\nHeight:",  h
 
-def getPixelColor(pic, w, h):
+def getAndSetPixelColor(pic, w, h):
     rgb = pic.convert("RGB")
     for x in range(0, w):
         for y in range(0, h):
-            r, g, b = pic.getpixel((w, h))
-            print r, g, b
+            r, g, b = rgb.getpixel((x, y))
+            
+            if(r > 220 and g > 220 and b > 220):
+                r, g, b = changedColor
+                rgb.putpixel((x,y), changedColor)
 
+    rgb.show()
 
