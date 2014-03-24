@@ -11,8 +11,8 @@ im = Image.open("C:\\Images\\circle.jpg")
 def blur(image):
     """Builds and returns a new image which is a blurred copy of the argument image"""
     
-    def tripleSum((r1, g1, b1), (r2, g2, b2)):
-        return (r1+r2, g1+g2, b1+b2)
+        def tripleSum ((r1, g1, b1), (r2, g2, b2)):
+            return (r1+r2, g1+g2, b1+b2)
     
     new=image.clone()
     for y in xrange(1, image.getheight()-1):
